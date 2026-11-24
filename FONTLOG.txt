@@ -58,6 +58,14 @@ Changes from the sources
 ChangeLog
 ---------
 
+2026-11-24  Version 0.4
+- Neovim live preview: :Vaagdevi (<leader>vv) opens an iTerm2 pane that
+  shows the buffer in Vaagdevi as you type, :VaagdeviSvara toggles colours
+  there, :VaagdeviConvert turns Baraha into Devanagari.
+- install.py --default makes Vaagdevi the default profile, and reinstalling
+  keeps earlier parent/default choices. The fonts are unchanged apart from
+  the version number.
+
 2026-11-24  Version 0.3
 - Sanskrit typing in zsh: `skt` turns typed Baraha into Devanagari as you
   type, with Vedic accents (q anudātta, # svarita, $ dīrgha svarita).
