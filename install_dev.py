@@ -38,7 +38,6 @@ def profile(name, guid, ps):
     return {
         "Name": name,
         "Guid": guid,
-        "Dynamic Profile Parent Name": "Gruvbox Dark",
         "Use Non-ASCII Font": True,
         "Non Ascii Font": f"{ps} 12",
         "Non-ASCII Ligatures": True,

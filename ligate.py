@@ -139,18 +139,18 @@ AKSHARA = re.compile(
     f"|[{_V}]|.)[{_MARKS}]*", re.S)
 
 
-def word_aksharas(word, font_path=None):
+def word_aksharas(word):
     """A word's akṣaras (orthographic syllables): any number of consonant +
     virāma, a consonant, then its vowel signs or a final virāma, then marks.
     A virāma before an independent vowel (र्ऋ) ends the syllable."""
     return AKSHARA.findall(word)
 
 
-def syllables(words, font_path):
+def syllables(words):
     """Distinct akṣaras with their counts."""
     seen = Counter()
     for word, n in words.items():
-        for ak in word_aksharas(word, font_path):
+        for ak in word_aksharas(word):
             seen[ak] += n
     return seen
 
@@ -439,7 +439,7 @@ def main():
     from fontTools.pens.boundsPen import BoundsPen
     stage1 = OUT
     shaper = Shaper(stage1)
-    corpus = syllables(corpus_words(), stage1)
+    corpus = syllables(corpus_words())
     candidates = list(corpus) + [s for s in synthetic() if s not in corpus]
 
     from build import SCALE, headline_span
@@ -544,6 +544,7 @@ def main():
     # Walk the corpus the way the packing lookup will, collecting every
     # (akṣara, step) that occurs.
     variants = {}
+
     def variant(seq, step):
         if (seq, step) not in variants:
             variants[seq, step] = drawing(seq, step)
@@ -552,7 +553,7 @@ def main():
         variant(seq, 0)
     for word in corpus_words():
         step = 0
-        for text in word_aksharas(word, stage1):
+        for text in word_aksharas(word):
             seq = by_text.get(text)
             step = variant(seq, step) if seq else 0
 
