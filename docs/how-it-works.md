@@ -22,6 +22,8 @@ the terminal where the cursor ended up (`ESC [6n`). The results are in
 So कि is 2 cells, क्ष is 2 (क ् ष), and ग्नि॑ is 3. Conjuncts are not grouped
 into one cell.
 
+![How iTerm2 hands out cells](images/diagram-cells.png)
+
 ## 2. What iTerm2 does to shaped glyphs
 
 iTerm2 only shapes complex scripts with CoreText when **ligatures** are on for
@@ -76,6 +78,8 @@ is about 1.4 cells wide; स॒त्यश्चि॒त्रश्र॑व�
 Stretching each akṣara to fit gives every letter a different size; centring
 it leaves uneven gaps inside words. Vaagdevi sets words as in print instead:
 
+![Centred akṣaras vs packed words](images/diagram-packing.png)
+
 - Every akṣara is drawn at **one common size**: Noto's natural proportions,
   all 20% wider (`XSCALE`), so words fill more of their cells.
 - Each akṣara is **left-aligned and pulled left by the slack carried from the
@@ -110,18 +114,27 @@ can't be evened out.
   (ं) lifts it just clear. Its stroke is 30% taller than Noto's, so ज॑ can't
   be mistaken for जं.
 
+![Svara on fixed lines](images/diagram-svara-lines.png)
+
 ## 6. Line spacing
 
 iTerm2's row height comes from the main font: Monaco's line is 1,333 units
 (ascent 1,000, descent 250, gap 83). Vaagdevi's ink reaches about 1,350 up
-(svarita) and −450 down (anudātta under ु), so at 100% a svarita can touch
-the anudātta of the line above. The profile's vertical spacing should be
-130% (`LINE_SPACING` in `build.py`, which `make dev` writes into the test
-profiles and `preview.py` uses for its rows).
+(svarita on ो) and −450 down (anudātta under ु). At 100% the marks of
+neighbouring lines in Ṛgveda 1.1 come within half a pixel at 12 pt, and the
+deepest and tallest marks overlap, as in दु॒हि॒ता above सो॑म॒. The profile's
+vertical spacing should be 130% (`LINE_SPACING` in `build.py`, which
+`make install` and `make dev` write into the profiles and `preview.py` uses
+for its rows).
+
+![Line spacing at 100% and 130%](images/diagram-line-spacing.png)
 
 ## 7. Svara colours
 
 Vaagdevi Svara (`svara_color.py`) is the same font plus COLR/CPAL tables.
+`make install` gives each font an iTerm2 profile, and `svara on` / `svara off`
+(`shell/svara.sh`) switches the current tab between them with iTerm2's
+`SetProfile` escape sequence.
 Every composite carrying an anudātta is drawn as one layer of itself in blue,
 every one carrying a svarita or kampa in salmon, one carrying both in violet.
 Other glyphs keep the terminal's text colour.
