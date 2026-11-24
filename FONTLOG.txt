@@ -12,8 +12,8 @@ Vaagdevi (वाग्देवी) is a companion font for rendering accented V
 in the iTerm2 terminal on macOS. It is meant to be the terminal's non-ASCII
 font, next to a monospace font such as Monaco.
 
-It is built entirely by the scripts in this repository (build.py, ligate.py)
-from two fonts under the SIL Open Font License 1.1:
+It is built entirely by the scripts in this repository (build.py, ligate.py,
+svara_color.py) from two fonts under the SIL Open Font License 1.1:
 
 - Noto Sans Devanagari (variable; wght and wdth axes)
   Copyright 2022 The Noto Project Authors
@@ -34,13 +34,16 @@ Changes from the sources
   advance is a whole number of cells, matching how iTerm2 counts cells.
 - Reph and the below-base rakāra get one cell of headline filler through
   a contextual GSUB rule.
-- About 4,800 composite glyphs, one per akṣara, are added from Noto's
-  natural layout. A late GSUB ligature lookup substitutes them, so iTerm2's
-  grid alignment cannot pull an akṣara apart.
+- About 7,700 composite glyphs, one per akṣara, are added from Noto's
+  natural layout, 20% wider. A late GSUB ligature lookup substitutes them,
+  so iTerm2's grid alignment cannot pull an akṣara apart.
+- About 42,000 pre-shifted copies of those composites pack each word as in
+  print. A chained contextual lookup in a new 'calt' feature picks each
+  akṣara's copy from the previous glyph.
 - Svara marks inside composites sit on fixed lines: anudātta hangs from
   one low line and svarita stands on one line above the headline. The
-  svarita stroke is drawn 40% taller.
-- Letters too wide for their cells use outlines from Noto's condensed
+  svarita stroke is drawn 30% taller.
+- Letters too wide for their room use outlines from Noto's condensed
   width (wdth 62.5).
 - GPOS advance adjustments are zeroed, so nothing changes advances after
   fitting.
@@ -48,6 +51,8 @@ Changes from the sources
   for marks typed out of order and it would cost a cell.
 - Merged with Noto Sans Mono for Latin, IAST, box drawing and block
   elements. Line metrics match Monaco.
+- Vaagdevi Svara is the same font with COLR/CPAL colour tables: akṣaras
+  carrying an anudātta are blue, those carrying a svarita or kampa salmon.
 
 
 ChangeLog
@@ -55,4 +60,6 @@ ChangeLog
 
 2026-11-23  Version 0.1
 - First working version for iTerm2 3.5.14, verified on the accented
-  Ṛgveda (457,200 of 457,202 word occurrences drawn correctly).
+  Ṛgveda (457,198 of 457,202 word occurrences drawn correctly; the rest
+  are typos in the source).
+- Words packed as in print; Vaagdevi Svara colour build.
