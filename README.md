@@ -122,7 +122,7 @@ source ~/.local/share/vaagdevi/skt.zsh
 Then type `skt` and press Enter. A small **संस्कृत** appears on the right of
 your prompt, and from there each word turns into Devanagari while you type
 it. Backspace takes back the last letter you typed. Press **Ctrl-X** and
-then **s** to switch back to plain typing; you can also use it to switch on
+then **t** to switch back to plain typing; you can also use it to switch on
 in the middle of a line. (Typing `skt` again wouldn't work, since in Sanskrit
 mode it becomes स्क्त्.)
 

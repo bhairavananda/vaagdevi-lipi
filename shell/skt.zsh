@@ -3,7 +3,7 @@
 #   source /path/to/vaagdevi-lipi/shell/skt.zsh     (in ~/.zshrc)
 #
 #   skt                  turn Sanskrit mode on
-#   Ctrl-X s             turn it on or off, any time (in Sanskrit mode,
+#   Ctrl-X t             turn it on or off, any time (in Sanskrit mode,
 #                        typing "skt" would give you स्क्त्)
 #   skt 'aqgnimI#LE'     print one line in Devanagari:  अ॒ग्निमी॑ळे
 #   skt < in.brh         convert a whole file
@@ -33,8 +33,12 @@ _skt_server() {
 }
 
 _skt_convert() {   # sets REPLY to the Devanagari for $1
-    print -r -u $_SKT_TO -- "$1"
-    IFS= read -r -u $_SKT_FROM REPLY
+    if print -r -u $_SKT_TO -- "$1" 2>/dev/null && IFS= read -r -u $_SKT_FROM REPLY; then
+        return 0
+    fi
+    REPLY=$1          # the converter has gone away: keep what was typed
+    _SKT_TO="" _SKT_FROM=""
+    return 1
 }
 
 _skt_forget() { _SKT_RAW=""; _SKT_START=-1; _SKT_SHOWN="" }
@@ -46,11 +50,16 @@ _skt_in_word() {
 }
 
 _skt_render() {
-    local before=${BUFFER[1,_SKT_START]} after=${BUFFER[_SKT_START+${#_SKT_SHOWN}+1,-1]}
-    _skt_convert "$_SKT_RAW"
+    local before=${BUFFER[1,_SKT_START]} after=${BUFFER[_SKT_START+${#_SKT_SHOWN}+1,-1]} ok=1
+    _skt_convert "$_SKT_RAW" || ok=0
     BUFFER="$before$REPLY$after"
     _SKT_SHOWN=$REPLY
     CURSOR=$(( _SKT_START + ${#REPLY} ))
+    if (( ! ok )); then
+        _skt_set 0
+        zle -K main
+        zle -M "skt: the converter stopped, so Sanskrit mode is off (type skt to restart it)"
+    fi
     # zsh thinks ि ी ा take no width, iTerm2 gives each a cell, so zsh's
     # usual partial redraw lands in the wrong column. Redraw the whole line.
     zle reset-prompt
@@ -92,7 +101,7 @@ _skt_set() {   # 1 = on, 0 = off
     _skt_forget
 }
 
-_skt_toggle() {   # Ctrl-X s, inside a line
+_skt_toggle() {   # Ctrl-X t, inside a line
     _skt_set $(( ! _SKT_ON )) || return
     if (( _SKT_ON )); then zle -K skt; else zle -K main; fi
     zle reset-prompt
@@ -114,8 +123,9 @@ add-zle-hook-widget line-init _skt_line_init
 bindkey -N skt main
 bindkey -M skt -R ' '-'~' _skt_insert
 bindkey -M skt '^?' _skt_backspace '^H' _skt_backspace
-bindkey -M main '^Xs' _skt_toggle
-bindkey -M skt '^Xs' _skt_toggle
+# Ctrl-X t ("transliterate") is unbound in zsh's emacs and vi keymaps.
+bindkey -M main '^Xt' _skt_toggle
+bindkey -M skt '^Xt' _skt_toggle
 
 skt() {
     if (( $# )); then
@@ -125,7 +135,7 @@ skt() {
     else
         _skt_set $(( ! _SKT_ON )) || return
         if (( _SKT_ON )); then
-            print "Sanskrit mode on: type Baraha (aqgnimI#LE). Ctrl-X s turns it off."
+            print "Sanskrit mode on: type Baraha (aqgnimI#LE). Ctrl-X t turns it off."
         else
             print "Sanskrit mode off"
         fi

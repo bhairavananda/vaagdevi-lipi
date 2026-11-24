@@ -83,7 +83,7 @@ Vaagdevi is installed.
   3. Add these lines to ~/.zshrc:
 
        source "$SHARE/svara.sh"     # 'svara on' / 'svara off': svara colours
-       source "$SHARE/skt.zsh"      # 'skt': type Sanskrit in Baraha
+       source "$SHARE/skt.zsh"      # 'skt': type Sanskrit in Baraha, Ctrl-X t to stop
 
      (In bash, only the first line works: Sanskrit typing needs zsh.)
 EOF
