@@ -1,0 +1,611 @@
+{
+ "term": "iTerm.app",
+ "version": "3.5.14",
+ "profile": "Vaagdevi Test",
+ "strings": [
+  {
+   "text": "क",
+   "codepoints": [
+    "U+0915 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ष",
+   "codepoints": [
+    "U+0937 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "म",
+   "codepoints": [
+    "U+092E Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "र",
+   "codepoints": [
+    "U+0930 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ळ",
+   "codepoints": [
+    "U+0933 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "अ",
+   "codepoints": [
+    "U+0905 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "इ",
+   "codepoints": [
+    "U+0907 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "उ",
+   "codepoints": [
+    "U+0909 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ए",
+   "codepoints": [
+    "U+090F Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ऋ",
+   "codepoints": [
+    "U+090B Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "१",
+   "codepoints": [
+    "U+0967 Nd"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "३",
+   "codepoints": [
+    "U+0969 Nd"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ऽ",
+   "codepoints": [
+    "U+093D Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "।",
+   "codepoints": [
+    "U+0964 Po"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ि",
+   "codepoints": [
+    "U+093F Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ी",
+   "codepoints": [
+    "U+0940 Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ा",
+   "codepoints": [
+    "U+093E Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ो",
+   "codepoints": [
+    "U+094B Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ौ",
+   "codepoints": [
+    "U+094C Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ः",
+   "codepoints": [
+    "U+0903 Mc"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "्",
+   "codepoints": [
+    "U+094D Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ु",
+   "codepoints": [
+    "U+0941 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ू",
+   "codepoints": [
+    "U+0942 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ृ",
+   "codepoints": [
+    "U+0943 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "े",
+   "codepoints": [
+    "U+0947 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ै",
+   "codepoints": [
+    "U+0948 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ं",
+   "codepoints": [
+    "U+0902 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "ँ",
+   "codepoints": [
+    "U+0901 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "॒",
+   "codepoints": [
+    "U+0952 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "॑",
+   "codepoints": [
+    "U+0951 Mn"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "क",
+   "codepoints": [
+    "U+0915 Lo"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "कि",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+093F Mc"
+   ],
+   "cells": 2,
+   "chars": 2
+  },
+  {
+   "text": "की",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+0940 Mc"
+   ],
+   "cells": 2,
+   "chars": 2
+  },
+  {
+   "text": "का",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+093E Mc"
+   ],
+   "cells": 2,
+   "chars": 2
+  },
+  {
+   "text": "को",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+094B Mc"
+   ],
+   "cells": 2,
+   "chars": 2
+  },
+  {
+   "text": "कः",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+0903 Mc"
+   ],
+   "cells": 2,
+   "chars": 2
+  },
+  {
+   "text": "कं",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+0902 Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "कु",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+0941 Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "के",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+0947 Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "क्",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+094D Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "क्ष",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+094D Mn",
+    "U+0937 Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "ज्ञ",
+   "codepoints": [
+    "U+091C Lo",
+    "U+094D Mn",
+    "U+091E Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "त्त",
+   "codepoints": [
+    "U+0924 Lo",
+    "U+094D Mn",
+    "U+0924 Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "ग्नि",
+   "codepoints": [
+    "U+0917 Lo",
+    "U+094D Mn",
+    "U+0928 Lo",
+    "U+093F Mc"
+   ],
+   "cells": 3,
+   "chars": 4
+  },
+  {
+   "text": "र्क",
+   "codepoints": [
+    "U+0930 Lo",
+    "U+094D Mn",
+    "U+0915 Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "क्र",
+   "codepoints": [
+    "U+0915 Lo",
+    "U+094D Mn",
+    "U+0930 Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "प्र",
+   "codepoints": [
+    "U+092A Lo",
+    "U+094D Mn",
+    "U+0930 Lo"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "मी॑",
+   "codepoints": [
+    "U+092E Lo",
+    "U+0940 Mc",
+    "U+0951 Mn"
+   ],
+   "cells": 2,
+   "chars": 3
+  },
+  {
+   "text": "अ॒",
+   "codepoints": [
+    "U+0905 Lo",
+    "U+0952 Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "ग्नि॑",
+   "codepoints": [
+    "U+0917 Lo",
+    "U+094D Mn",
+    "U+0928 Lo",
+    "U+093F Mc",
+    "U+0951 Mn"
+   ],
+   "cells": 3,
+   "chars": 5
+  },
+  {
+   "text": "हि॑तं",
+   "codepoints": [
+    "U+0939 Lo",
+    "U+093F Mc",
+    "U+0951 Mn",
+    "U+0924 Lo",
+    "U+0902 Mn"
+   ],
+   "cells": 3,
+   "chars": 5
+  },
+  {
+   "text": "त॒े",
+   "codepoints": [
+    "U+0924 Lo",
+    "U+0952 Mn",
+    "U+0947 Mn"
+   ],
+   "cells": 1,
+   "chars": 3
+  },
+  {
+   "text": "स्व१॒॑",
+   "codepoints": [
+    "U+0938 Lo",
+    "U+094D Mn",
+    "U+0935 Lo",
+    "U+0967 Nd",
+    "U+0952 Mn",
+    "U+0951 Mn"
+   ],
+   "cells": 3,
+   "chars": 6
+  },
+  {
+   "text": "यो॒३॒॑",
+   "codepoints": [
+    "U+092F Lo",
+    "U+094B Mc",
+    "U+0952 Mn",
+    "U+0969 Nd",
+    "U+0952 Mn",
+    "U+0951 Mn"
+   ],
+   "cells": 3,
+   "chars": 6
+  },
+  {
+   "text": "सी३",
+   "codepoints": [
+    "U+0938 Lo",
+    "U+0940 Mc",
+    "U+0969 Nd"
+   ],
+   "cells": 3,
+   "chars": 3
+  },
+  {
+   "text": "दे॒वाँ",
+   "codepoints": [
+    "U+0926 Lo",
+    "U+0947 Mn",
+    "U+0952 Mn",
+    "U+0935 Lo",
+    "U+093E Mc",
+    "U+0901 Mn"
+   ],
+   "cells": 3,
+   "chars": 6
+  },
+  {
+   "text": "पु॒रोहि॑तं",
+   "codepoints": [
+    "U+092A Lo",
+    "U+0941 Mn",
+    "U+0952 Mn",
+    "U+0930 Lo",
+    "U+094B Mc",
+    "U+0939 Lo",
+    "U+093F Mc",
+    "U+0951 Mn",
+    "U+0924 Lo",
+    "U+0902 Mn"
+   ],
+   "cells": 6,
+   "chars": 10
+  },
+  {
+   "text": "अ॒ग्निमी॑ळे पु॒रोहि॑तं य॒ज्ञस्य॑ दे॒वमृ॒त्विज॑म् ।होता॑रं रत्न॒धात॑मम् ॥",
+   "codepoints": [
+    "U+0905 Lo",
+    "U+0952 Mn",
+    "U+0917 Lo",
+    "U+094D Mn",
+    "U+0928 Lo",
+    "U+093F Mc",
+    "U+092E Lo",
+    "U+0940 Mc",
+    "U+0951 Mn",
+    "U+0933 Lo",
+    "U+0947 Mn",
+    "U+0020 Zs"
+   ],
+   "cells": 47,
+   "chars": 72
+  },
+  {
+   "text": "agním",
+   "codepoints": [
+    "U+0061 Ll",
+    "U+0067 Ll",
+    "U+006E Ll",
+    "U+00ED Ll",
+    "U+006D Ll"
+   ],
+   "cells": 5,
+   "chars": 5
+  },
+  {
+   "text": "agním",
+   "codepoints": [
+    "U+0061 Ll",
+    "U+0067 Ll",
+    "U+006E Ll",
+    "U+0069 Ll",
+    "U+0301 Mn",
+    "U+006D Ll"
+   ],
+   "cells": 5,
+   "chars": 6
+  },
+  {
+   "text": "ṛtvíjam",
+   "codepoints": [
+    "U+1E5B Ll",
+    "U+0074 Ll",
+    "U+0076 Ll",
+    "U+00ED Ll",
+    "U+006A Ll",
+    "U+0061 Ll",
+    "U+006D Ll"
+   ],
+   "cells": 7,
+   "chars": 7
+  },
+  {
+   "text": "ḻ",
+   "codepoints": [
+    "U+1E3B Ll"
+   ],
+   "cells": 1,
+   "chars": 1
+  },
+  {
+   "text": "m̐",
+   "codepoints": [
+    "U+006D Ll",
+    "U+0310 Mn"
+   ],
+   "cells": 1,
+   "chars": 2
+  },
+  {
+   "text": "▂▄▇",
+   "codepoints": [
+    "U+2582 So",
+    "U+2584 So",
+    "U+2587 So"
+   ],
+   "cells": 3,
+   "chars": 3
+  }
+ ]
+}
