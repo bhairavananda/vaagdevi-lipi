@@ -20,6 +20,7 @@ Steps
 """
 
 import json
+import re
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -49,6 +50,7 @@ SCALE = 1.00           # Devanagari at Noto's full design size
 # marks reach above and below Monaco's line box, so rows need extra room for
 # a svarita on one line to clear the anudātta of the line above.
 LINE_SPACING = 1.3
+VERSION = "0.2"
 RAISE = 136            # lifts the headline to Monaco's cap height (758 units)
 HEADLINE = (548, 622)  # y-band of the shirorekha in Noto Devanagari (unscaled)
 
@@ -85,9 +87,11 @@ def load_devanagari(wdth=WDTH):
 
 # --- 2. Cell budgets from the corpus ---------------------------------------------
 
-def corpus_words():
+def corpus_words(examples=False):
     """Every distinct word of the accented Ṛgveda with its count
-    (data/rigveda_words.tsv), plus forms the renderers produce."""
+    (data/rigveda_words.tsv), plus forms the renderers produce. With
+    `examples`, also every word of the texts in examples/, so they render
+    fully packed too (the checks report on the Ṛgveda alone)."""
     words = Counter()
     for line in WORDS.open(encoding="utf-8"):
         if line.startswith("#") or not line.strip():
@@ -96,6 +100,11 @@ def corpus_words():
         words[w] += int(n)
     for w in "॥ १ ॥ २ ३ ४ ५ ६ ७ ८ ९ ० । स्व१॒॑ यो॒३॒॑ सी३ दे॒वाँ इति॑ इति॒".split():
         words[w] += 1
+    if examples:
+        for path in sorted((HERE / "examples").glob("*.txt")):
+            text = path.read_text(encoding="utf-8")
+            for w in re.findall("[\u0900-\u097F\u1CD0-\u1CFF\uA8E0-\uA8FF\u200C\u200D]+", text):
+                words[w] += 1
     return words
 
 
@@ -108,7 +117,7 @@ def solve_cells(font_bytes, font):
     hmtx = font["hmtx"]
 
     clusters = Counter()
-    for text, weight in corpus_words().items():
+    for text, weight in corpus_words(examples=True).items():
         buf = hb.Buffer()
         buf.add_str(text)
         buf.guess_segment_properties()
@@ -475,13 +484,14 @@ def finish(deva, tmp_deva):
     font = Merger().merge([str(tmp_mono), str(tmp_deva)])
     name = font["name"]
     for rec in list(name.names):
-        if rec.nameID in (1, 3, 4, 6, 16, 17):
+        if rec.nameID in (1, 3, 4, 5, 6, 16, 17):
             name.removeNames(nameID=rec.nameID)
     name.setName("Vaagdevi", 1, 3, 1, 0x409)
     name.setName("Regular", 2, 3, 1, 0x409)
-    name.setName("Vaagdevi Regular 0.1", 3, 3, 1, 0x409)
+    name.setName(f"Vaagdevi Regular {VERSION}", 3, 3, 1, 0x409)
     name.setName("Vaagdevi Regular", 4, 3, 1, 0x409)
-    name.setName("Version 0.100", 5, 3, 1, 0x409)
+    name.setName(f"Version {float(VERSION):.3f}", 5, 3, 1, 0x409)
+    font["head"].fontRevision = float(VERSION)
     name.setName("Vaagdevi-Regular", 6, 3, 1, 0x409)
     name.setName("Vaagdevi is built from Noto Sans Mono and Noto Sans Devanagari "
                  "(SIL OFL 1.1).", 10, 3, 1, 0x409)

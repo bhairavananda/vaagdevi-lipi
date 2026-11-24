@@ -1,283 +1,229 @@
 # Vaagdevi (वाग्देवी)
 
-**A terminal font for accented Vedic Sanskrit in iTerm2.**
+![Śrīmad Bhāgavatam 4.9.6 in iTerm2 with Vaagdevi](docs/images/bhagavatam-4.9.6.png)
 
-Vaagdevi renders Devanagari with its svara marks (anudātta ॒, svarita ॑, kampa
-and pluta) correctly on the terminal grid. Conjuncts join, vowel signs sit in
-the right place, words are set as in print, and columns stay aligned.
+> *He who enters within me and, by His own splendour, brings to life this
+> sleeping speech of mine, and the other senses too, hands, feet, ears and
+> skin, and the life-breath: to You, the Lord, the Supreme Person, I bow.*
+>
+> Śrīmad Bhāgavatam 4.9.6, Dhruva's prayer, as Vaagdevi draws it in iTerm2.
 
-![Ṛgveda 1.1 in iTerm2 with Vaagdevi](docs/images/rv-1.1-vaagdevi.png)
+Vaagdevi is a font for reading and writing Sanskrit in the terminal, accented
+Vedic text included. It sits next to your usual monospace font in iTerm2 and
+takes over the Devanagari: conjuncts join up, vowel signs land on the right
+letter, svara marks sit on level lines, and every column stays where your
+tools expect it.
 
-*Ṛgveda 1.1 (`cat examples/rv-1.1.txt`) in iTerm2, Monaco 12 with Vaagdevi as
-the non-ASCII font and 1.3 line spacing.*
+It's named after Vāgdevī, the goddess of speech, which felt right for a font
+whose whole job is to let the text speak properly.
 
 | Without Vaagdevi | With Vaagdevi |
 |---|---|
 | ![without](docs/images/rv-1.1-without.png) | ![with](docs/images/rv-1.1-vaagdevi.png) |
 
-Without it, iTerm2 falls back to a macOS Devanagari font, and the shaped
-glyphs get pulled apart by the terminal grid. Half forms disappear, ि lands a
-cell away from its consonant, and svara marks drift.
+*Ṛgveda 1.1 in iTerm2. On the left, macOS's own Devanagari font gets pulled
+apart by the terminal grid.*
 
-**Svara mode** colours every akṣara by its svara, anudātta blue and svarita
-salmon. Type `svara on` and `svara off` to switch it in any tab (see
-[Svara colours](#svara-colours)).
+## Installing
 
----
+You'll need iTerm2 3.5 on macOS. Then:
 
-## Contents
+```sh
+curl -fsSL https://github.com/bhairavananda/vaagdevi-lipi/releases/latest/download/install.sh | sh
+```
 
-- [Quick start](#quick-start)
-- [Setting up iTerm2](#setting-up-iterm2)
-- [Svara colours](#svara-colours)
-- [What it handles](#what-it-handles)
-- [How it works](#how-it-works)
-- [Building from source](#building-from-source)
-- [Development tools](#development-tools)
-- [Limits](#limits)
-- [Sources and license](#sources-and-license)
+That downloads the two fonts and adds two iTerm2 profiles, **Vaagdevi** and
+**Vaagdevi Svara**. Both copy your default profile and change only the
+Devanagari font, so your colours, keys and main font come along unchanged.
+Quit and reopen iTerm2, open a window with the Vaagdevi profile from the
+Profiles menu, and try something:
 
-## Quick start
+```sh
+curl -fsSL https://raw.githubusercontent.com/bhairavananda/vaagdevi-lipi/main/examples/rv-1.1.txt
+```
 
-Requirements: macOS, iTerm2 3.5, and Homebrew Python 3.12 or newer (for building).
+If your main font isn't 12 pt, run the installer with `VAAGDEVI_SIZE=14`
+(or whatever you use) in front of `sh`. The script is short and only writes
+to `~/Library/Fonts`, iTerm2's profile folder and `~/.local/share/vaagdevi`,
+so feel free to read [`install.sh`](install.sh) before you run it.
+
+### Setting it up by hand
+
+If you'd rather add Vaagdevi to a profile you already have, download
+`Vaagdevi-Regular.ttf` from the [latest release][release], double-click it to
+install, and in **iTerm2 → Settings → Profiles → Text**:
+
+1. Turn on **Use a different font for non-ASCII text** and pick Vaagdevi at
+   the same size as your main font.
+2. Turn on **ligatures** for that non-ASCII font. iTerm2 only shapes
+   Devanagari when ligatures are on, and your main font isn't affected.
+3. Set **vertical spacing** to 130%, so svara marks on one line have room to
+   clear the next.
+
+Vaagdevi's cells are 0.6 em wide, the same as Monaco, Menlo, SF Mono and most
+other monospace fonts, so Devanagari and ASCII share one grid.
+
+[release]: https://github.com/bhairavananda/vaagdevi-lipi/releases/latest
+
+## Seeing the svaras in colour
+
+![Ṛgveda 1.1 with svara colours](docs/images/rv-1.1-svara.png)
+
+The second font, **Vaagdevi Svara**, colours each akṣara by its accent:
+anudātta in blue, svarita (and kampa) in salmon, and both together in violet.
+Unmarked akṣaras keep your normal text colour. Texts without accents, like
+the Bhāgavatam verse above, simply stay that colour throughout.
+
+To switch it on and off, add the toggle to your `~/.zshrc` or `~/.bashrc`
+(the installer prints the exact line):
+
+```sh
+source ~/.local/share/vaagdevi/svara.sh
+```
+
+and then, in any tab:
+
+```sh
+svara on     # colours
+svara off    # plain
+svara        # flip between them
+```
+
+The switch happens straight away and recolours whatever is already on the
+screen, so you can `cat` a sūkta and then flip back and forth. Each tab keeps
+its own setting. Under the hood it's iTerm2's `SetProfile` escape sequence,
+which means a few other things work too:
+
+- Any program can switch by printing
+  `printf '\e]1337;SetProfile=Vaagdevi Svara\a'` (or `SetProfile=Vaagdevi`),
+  and that works over ssh as well.
+- You can open a tab with either profile from iTerm2's Profiles menu, or make
+  Vaagdevi Svara your default profile if you'd like colour all the time.
+- In tmux, `svara` wraps the sequence so tmux passes it through. Turn on
+  `set -g allow-passthrough on` (tmux 3.3 or newer) for that.
+
+You might wonder why this is a second font and not ordinary terminal colours.
+iTerm2 starts a new run of text whenever the colour changes, and Devanagari
+shaping can't see across those runs, so colouring each akṣara with escape
+codes would pull the words apart again. Putting the colour inside the font
+keeps every word in one run.
+
+## How it works
+
+Terminals think in cells. iTerm2 gives each letter and each spacing vowel
+sign one cell, and gives combining marks none, so an akṣara can own anywhere
+from one cell to several:
+
+![How iTerm2 hands out cells](docs/images/diagram-cells.png)
+
+After a line is shaped, iTerm2 also moves each glyph back to the cell of the
+character it came from. Devanagari draws some glyphs out of order (ि sits
+before its consonant, reph after it), so that move tears akṣaras apart.
+Vaagdevi avoids it by drawing every akṣara as one composite glyph, taken from
+Noto Sans Devanagari's own layout and shifted ahead of time by exactly the
+amount iTerm2 will move it.
+
+The cell counting also means an akṣara like रो owns two cells but only needs
+about one. Vaagdevi draws every akṣara at the same size and slides it left
+by the room the akṣaras before it didn't use. Each word comes out set as it
+would be in a book, with its spare cells after it:
+
+![Centred akṣaras vs packed words](docs/images/diagram-packing.png)
+
+The svara marks hang on fixed lines, the way you hear them in recitation:
+every anudātta at the same depth, every svarita at the same height.
+
+![Svara on fixed lines](docs/images/diagram-svara-lines.png)
+
+Those marks reach a little above and below the line of a normal monospace
+font, which is why the profiles use 130% line spacing:
+
+![Line spacing at 100% and 130%](docs/images/diagram-line-spacing.png)
+
+[`docs/how-it-works.md`](docs/how-it-works.md) has the full story, including
+the parts of iTerm2's source this is built around.
+
+## Things to know
+
+- Vaagdevi is made for **iTerm2 on macOS**. Other terminals place glyphs in
+  their own ways, so it won't line up there.
+- **Spacing between words varies a little.** The space between two words is
+  an ASCII character, so iTerm2 draws it with your main font and Vaagdevi
+  can't see past it. Each word keeps the cells iTerm2 gave it, and words with
+  many conjuncts end up with some extra room.
+- The packing is worked out ahead of time for every word in the **Ṛgveda**
+  and in [`examples/`](examples). Other texts mostly reuse the same pieces.
+  When a word needs one that doesn't exist, it starts again from its own cell
+  and you'll see a small gap.
+- In colour mode, **udātta and pracaya** look the same. Both are unmarked in
+  the text, and telling them apart needs the akṣaras before them, sometimes
+  across a word boundary.
+
+## Working on Vaagdevi
+
+Welcome! The whole font is generated by a few Python scripts from Noto Sans
+Devanagari and Noto Sans Mono, so you can change how it looks by changing
+code and rebuilding. You'll need Homebrew Python 3.12 or newer.
 
 ```sh
 git clone https://github.com/bhairavananda/vaagdevi-lipi.git
 cd vaagdevi-lipi
-make venv        # create .venv with fontTools, uharfbuzz, pyobjc
-make             # build both fonts into dist/ and run the checks
-make install     # install both fonts and the "Vaagdevi" / "Vaagdevi Svara" iTerm2 profiles
+make venv      # once: a .venv with fontTools, uharfbuzz and pyobjc
+make           # build both fonts into dist/ and run the checks (about 40 s)
+make dev       # install this build into iTerm2 as "Vaagdevi Test"
 ```
 
-Open a new iTerm2 window with the **Vaagdevi** profile (Profiles menu, or
-⌘O) and try it:
+`make dev` installs each build under a fresh name, because macOS caches fonts
+by name and a running iTerm2 would otherwise keep drawing the old one. It
+also sets up **Vaagdevi Test** and **Vaagdevi Svara Test** profiles, so you
+can try a build without touching your own. When you're happy with it,
+`make install` installs it properly.
 
-```sh
-cat examples/rv-1.1.txt
-```
+The build happens in three steps:
 
-For the svara toggle, add this to your `~/.zshrc` (or `~/.bashrc`):
-
-```sh
-source /path/to/vaagdevi-lipi/shell/svara.sh
-```
-
-## Setting up iTerm2
-
-Vaagdevi is a **companion font**. Your usual monospace font (Monaco, Menlo,
-SF Mono) keeps drawing ASCII, and Vaagdevi draws Devanagari and IAST.
-
-`make install` sets this up for you. It adds two iTerm2 profiles, **Vaagdevi**
-and **Vaagdevi Svara**, that inherit everything from your default profile and
-change only the three settings below. If your main font isn't 12 pt, use
-`.venv/bin/python install.py --size 14`; to inherit from another profile, add
-`--parent "Profile name"`. After installing a new build, quit and reopen
-iTerm2, because macOS caches fonts by name.
-
-To set up a profile of your own instead, go to **iTerm2 → Settings →
-Profiles → *your profile* → Text**:
-
-1. **Turn on "Use a different font for non-ASCII text"** and choose
-   **Vaagdevi** at the same size as your main font.
-2. **Turn on ligatures for the non-ASCII font.** This is required: it is the
-   only mode in which iTerm2 shapes Devanagari at all. Your ASCII font is
-   unaffected.
-3. **Set vertical spacing to 130%.** Svara marks reach above and below
-   Monaco's line. At 100% the marks of neighbouring lines nearly touch, and
-   the deepest anudātta (under ु) can run into the tallest svarita (on ो) on
-   the next line:
-
-   ![Line spacing at 100% and 130%](docs/images/diagram-line-spacing.png)
-
-Vaagdevi's cells are 0.6 em wide, which matches Monaco, Menlo and most
-monospace fonts, so Devanagari and ASCII share the grid exactly.
-
-## Svara colours
-
-![Ṛgveda 1.1 with svara colours](docs/images/rv-1.1-svara.png)
-
-Svara mode is a second font, **Vaagdevi Svara**, that is Vaagdevi with colour
-built in:
-
-| Akṣara | Colour |
+| Script | What it does |
 |---|---|
-| carries an anudātta ॒ | blue |
-| carries a svarita ॑ or kampa ᳚ | salmon |
-| carries both | violet |
-| unmarked (udātta or pracaya) | the terminal's text colour |
+| `build.py` | Takes Noto Sans Devanagari at weight 500, fits every glyph to the 600-unit cell grid, and merges in Noto Sans Mono |
+| `ligate.py` | Builds one composite per akṣara, the shifted copies used for packing, and the substitution rules that pick them |
+| `svara_color.py` | Makes the Vaagdevi Svara copy with colour tables |
 
-### Turning it on and off
+`make verify` checks every word of the accented Ṛgveda. `verify.py` checks
+that each word is exactly as wide as the cells iTerm2 gives it, and
+`verify_iterm.py` runs a Python port of iTerm2's glyph placement to check
+every glyph lands where it should. Right now 457,198 of 457,202 words pass;
+the four that don't are typos in the source text.
 
-`make install` creates one profile per font: **Vaagdevi** (plain) and
-**Vaagdevi Svara** (coloured). The toggle switches the current tab between
-them. With `shell/svara.sh` sourced in your shell:
+A few tools make the loop quicker:
 
-```sh
-svara on      # this tab switches to Vaagdevi Svara: svaras in colour
-svara off     # back to plain Vaagdevi
-svara         # toggle
-```
+- `preview.py out.png "अ॒ग्निमी॑ळे"` draws text the way iTerm2 will, so you
+  can check a change without a screenshot. `SIZE=110` zooms in.
+- `make diagrams` redraws the diagrams in this README from the current build.
+- `make screenshots` retakes the iTerm2 screenshots. It needs Screen
+  Recording permission for your terminal app.
+- To make a new text render fully packed, add it to `examples/` and rebuild.
 
-The switch is instant and recolours everything already on screen, so you can
-`cat` a sūkta and then flip between the two views. Each tab is independent.
-
-Other ways to switch:
-
-- **Any shell or program** can send the escape sequence itself:
-  `printf '\e]1337;SetProfile=Vaagdevi Svara\a'` (and `SetProfile=Vaagdevi`
-  to switch back). It works over ssh too, since the sequence travels with
-  the output.
-- **iTerm2's menus:** open a new tab or window with either profile from the
-  **Profiles** menu.
-- **Always on:** make Vaagdevi Svara your default profile (Settings →
-  Profiles → Other Actions → Set as Default).
-
-Inside **tmux**, `svara` wraps the sequence so tmux passes it through; this
-needs `set -g allow-passthrough on` (tmux 3.3 or later). If your profiles
-have other names, set `VAAGDEVI_PLAIN_PROFILE` and `VAAGDEVI_SVARA_PROFILE`
-before sourcing the script.
-
-### Why it's a font, not terminal colours
-
-iTerm2 starts a new shaping run whenever the text colour changes
-(`shouldSegmentWithAttributes` in `iTermAttributedStringBuilder.m`). Colouring
-akṣaras with ANSI escape codes would therefore cut every word at each colour
-change and undo the word packing described below. Vaagdevi Svara stores the
-colours in the font's COLR/CPAL tables instead, so iTerm2 sees one run of one
-colour and the font paints each akṣara.
-
-## What it handles
-
-| | Example |
-|---|---|
-| Vowel signs before and after the consonant | कि की का को |
-| Conjuncts, half forms, reph, rakāra | क्ष ज्ञ ग्नि र्क प्र ष्ट्र |
-| Words set as in print, spare cells after the word | अ॒ग्निमी॑ळे पु॒रोहि॑तं |
-| Anudātta on one fixed low line | ई॒ळे॒ र॒त्न॒धात॑मम् |
-| Svarita on one fixed line, distinct from anusvāra | ज॑ vs जं |
-| Kampa | अ॒प्स्व१॒॑न्तः, रा॒यो॒३॒॑ऽवनिः |
-| Pluta | आ॒सी३त् |
-| Candrabindu, avagraha, daṇḍas, Devanagari digits | दे॒वाँ, सोऽवनिः, ॥ १ ॥ |
-| IAST with accents | agním īḻe puróhitaṃ |
-
-## How it works
-
-iTerm2 gives every letter and spacing vowel sign one cell, and combining marks
-none, so an akṣara owns anywhere from one cell to several:
-
-![How iTerm2 hands out cells](docs/images/diagram-cells.png)
-
-It also re-places every shaped glyph by the terminal cell of the
-character it came from. That's harmless for Latin but tears Devanagari apart,
-because Devanagari draws some glyphs out of character order. Vaagdevi turns
-every akṣara into a **single composite glyph**, taken from Noto Sans
-Devanagari's own layout and pre-shifted by exactly the amount iTerm2 will
-move it. iTerm2 can't pull a single glyph apart.
-
-On top of that:
-- **Words are packed.** iTerm2 gives each letter and spacing vowel sign a
-  whole cell, so रो or हि get 2 cells for about 1.2 cells of letter. Every
-  akṣara is drawn at its natural width (all 20% wider than Noto, the same
-  for every letter) and pulled left by the spare room of the akṣaras before
-  it, so a word reads as in print and its spare cells collect after it. A
-  contextual GSUB lookup picks each akṣara's pre-shifted copy from the one
-  before it.
-
-  ![Centred akṣaras vs packed words](docs/images/diagram-packing.png)
-
-- **Anudātta and svarita sit on fixed lines**, as they read in recitation.
-
-  ![Svara on fixed lines](docs/images/diagram-svara-lines.png)
-
-The full explanation, including the iTerm2 source behaviour this is built
-around, is in **[docs/how-it-works.md](docs/how-it-works.md)**.
-
-## Building from source
-
-```sh
-make venv     # once: Python venv with requirements.txt
-make          # build both fonts + verify
-make font     # Vaagdevi only → dist/Vaagdevi-Regular.ttf
-make svara    # Vaagdevi Svara → dist/VaagdeviSvara-Regular.ttf (after make font)
-make verify   # run both checks
-make install  # install both fonts and the Vaagdevi / Vaagdevi Svara profiles
-make dev      # build and install both into iTerm2 under fresh names, for testing
-make diagrams # redraw the explanatory diagrams from the built font
-make screenshots  # retake the README screenshots in iTerm2
-make clean    # remove dist/
-```
-
-The build has three stages:
-
-| Stage | Script | What it does |
-|---|---|---|
-| 1 | `build.py` | Instances Noto Sans Devanagari (weight 500), fits every glyph to the 600-unit cell grid, adds reph and rakāra headline filler, zeroes GPOS advance changes, and merges with Noto Sans Mono |
-| 2 | `ligate.py` | Adds one composite glyph per akṣara from Noto's natural layout (svara on fixed lines), its pre-shifted copies for packing, and the GSUB lookups that substitute them |
-| 3 | `svara_color.py` | Copies the font as Vaagdevi Svara and adds COLR/CPAL colour by svara |
-
-Checks, run by `make verify`:
-
-| Script | What it checks |
-|---|---|
-| `verify.py` | HarfBuzz: every Ṛgveda word's width equals the cells iTerm2 gives it |
-| `verify_iterm.py` | CoreText plus a port of iTerm2's glyph placement: every glyph lands where intended |
-
-Current result: **457,198 of 457,202** Ṛgveda word occurrences are drawn
-correctly. The four misses are typos in the source text (doubled vowel signs).
-
-## Development tools
-
-| Tool | Use |
-|---|---|
-| `preview.py out.png "text" …` | Draws text exactly as iTerm2 will (CoreText plus iTerm2's placement rule and row height), so you can check rendering without a screenshot. Set `SIZE=110` to see details, `LINE_SPACING=1.0` to compare row heights. |
-| `make dev` / `install_dev.py` | Installs the current builds as `Vaagdevi Dev <time>` and `Vaagdevi Svara Dev <time>` and points the **Vaagdevi Test** and **Vaagdevi Svara Test** profiles at them. macOS caches fonts by name, so reusing a name would leave a running iTerm2 drawing the old build. |
-| `make screenshots` / `screenshots.py` | Opens iTerm2 windows without Vaagdevi, with it and with Vaagdevi Svara, captures them to `docs/images/`, and closes them. Needs Screen Recording permission for your terminal app. Options: `--profile`, `--svara-profile`, `--text`, `--name`. |
-| `make diagrams` / `diagrams.py` | Redraws the four diagrams in `docs/images/` with the built font, each line placed as iTerm2 places it. |
-| `probe.py` | Run inside iTerm2: measures how many cells it gives each test string (`data/probe_results.json`) |
-
-The packing and spacing settings are at the top of `ligate.py` (`XSCALE`,
-`OVERHANG`, `TRACK_*`, `PACK_*`); `LINE_SPACING` is in `build.py`.
-
-Repository layout:
+The settings that shape the look (how wide akṣaras are drawn, how far a word
+may run into the next space, how slack-heavy words spread out) are named
+constants at the top of `ligate.py`, each with a comment saying what it does.
+Line spacing and the version number live in `build.py`.
 
 ```
 build.py  ligate.py  svara_color.py   the build
 verify.py  verify_iterm.py            the checks
-install.py  shell/svara.sh            installing, and the svara toggle
-preview.py  diagrams.py  probe.py  install_dev.py  screenshots.py
-data/rigveda_words.tsv        every distinct word of the accented Ṛgveda, with counts
-data/probe_results.json       iTerm2 cell measurements
-examples/rv-1.1.txt           Ṛgveda 1.1, for trying the font
-sources/                      Noto Sans Devanagari and Noto Sans Mono (OFL)
-docs/how-it-works.md          the technical explanation
-DESIGN.md                     the original design and measurements
+install.py  install.sh                installing from a checkout / from a release
+shell/svara.sh                        the svara toggle
+preview.py  diagrams.py  install_dev.py  screenshots.py  probe.py
+data/                                 the Ṛgveda word list and iTerm2 measurements
+examples/                             texts to try, also packed by the build
+sources/                              Noto Sans Devanagari and Noto Sans Mono
+docs/                                 how-it-works.md and the images
+DESIGN.md                             the original design notes
 ```
 
-## Limits
+## License
 
-- **iTerm2 only** (3.5, macOS). Other terminals place glyphs differently.
-- **Spacing between words varies.** The space between words is ASCII, so
-  iTerm2 draws it with your main font, and Vaagdevi can't see across it. A
-  word keeps the cells iTerm2 gives it: a word with many conjuncts
-  (स॒त्यश्चि॒त्रश्र॑वस्तमः) has spare room, which is partly spread inside the
-  word as small gaps bridged by the shirorekha and partly left after it.
-- **Packing covers the Ṛgveda.** Pre-shifted copies exist for every akṣara at
-  every position it takes in the Ṛgveda. Other texts mostly reuse them; where
-  one is missing, the word restarts from its cell and shows a gap.
-- **Svara colours can't tell udātta from pracaya.** Both are unmarked, and
-  which one an akṣara is depends on the akṣaras before it, across word
-  boundaries the font can't see.
-- **The font is near OpenType's glyph limit** (about 54,500 of 65,535), so
-  adding more texts would need a coarser shift step.
-- **Wide letters at the start of a word** (आ, औ) are narrowed or use Noto's
-  condensed design.
-
-## Sources and license
-
-The font is built from **Noto Sans Devanagari** and **Noto Sans Mono** by The
-Noto Project Authors, both under the SIL Open Font License 1.1. Vaagdevi is
-released under the same license: see [`OFL.txt`](OFL.txt), with every change
-from the sources listed in [`FONTLOG.txt`](FONTLOG.txt).
-
-`data/rigveda_words.tsv` and `examples/rv-1.1.txt` are from the accented
-Ṛgveda saṃhitā and padapāṭha, which are in the public domain.
+Vaagdevi is built from Noto Sans Devanagari and Noto Sans Mono by the Noto
+Project Authors, and like them it's released under the SIL Open Font License
+1.1 ([`OFL.txt`](OFL.txt)). Every change from the original fonts is listed
+in [`FONTLOG.txt`](FONTLOG.txt). The Ṛgveda and Bhāgavatam texts are in the
+public domain.
