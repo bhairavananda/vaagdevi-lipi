@@ -127,7 +127,8 @@ def watch(path):
             if stamp != last:
                 last = stamp
                 try:
-                    state = json.loads(open(state_path, encoding="utf-8").read())
+                    with open(state_path, encoding="utf-8") as f:
+                        state = json.load(f)
                 except (OSError, ValueError):
                     state = {}
                 if state.get("svara") is not None and state["svara"] != svara:

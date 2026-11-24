@@ -25,6 +25,7 @@ vim.g.loaded_vaagdevi = true
 local here = debug.getinfo(1, "S").source:sub(2)
 local root = vim.fn.fnamemodify(here, ":p:h:h:h")   -- nvim/plugin/x.lua → root
 
+local uv = vim.uv or vim.loop   -- vim.uv is Neovim 0.10+
 local preview = nil   -- { tmp = path, pane = iTerm2 session id, svara = bool }
 local timer = nil
 
@@ -89,7 +90,7 @@ local function write_soon()
   if not preview then
     return
   end
-  timer = timer or vim.uv.new_timer()
+  timer = timer or uv.new_timer()
   timer:stop()
   timer:start(60, 0, vim.schedule_wrap(write_now))
 end
@@ -109,6 +110,7 @@ local function close()
   end
   os.remove(p.tmp)            -- the preview also exits by itself once this is gone
   os.remove(p.tmp .. ".state")
+  os.remove(p.tmp .. ".sh")
   pcall(vim.api.nvim_del_augroup_by_name, "Vaagdevi")
 end
 
