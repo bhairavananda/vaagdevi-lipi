@@ -5,8 +5,9 @@
 #
 # It downloads Vaagdevi and Vaagdevi Svara into ~/Library/Fonts, adds the
 # "Vaagdevi" and "Vaagdevi Svara" iTerm2 profiles (they inherit everything
-# else from your default profile), and puts the svara toggle in
-# ~/.local/share/vaagdevi/svara.sh. It doesn't edit your shell config.
+# else from your default profile), and puts the svara toggle and the
+# Sanskrit typing mode in ~/.local/share/vaagdevi. It doesn't edit your
+# shell config.
 #
 # Set VAAGDEVI_SIZE to match your main font size (default 12), or
 # VAAGDEVI_VERSION to install a specific release tag instead of the latest.
@@ -41,14 +42,14 @@ fi
 # Download everything first, so a failed download leaves nothing half-written.
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf svara.sh; do
+for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf svara.sh skt.zsh skt.py; do
     echo "downloading $f"
     curl -fsSL -o "$TMP/$f" "$BASE/$f"
 done
 
 mkdir -p "$FONTS" "$PROFILES" "$SHARE"
 mv "$TMP/Vaagdevi-Regular.ttf" "$TMP/VaagdeviSvara-Regular.ttf" "$FONTS/"
-mv "$TMP/svara.sh" "$SHARE/svara.sh"
+mv "$TMP/svara.sh" "$TMP/skt.zsh" "$TMP/skt.py" "$SHARE/"
 
 cat > "$PROFILES/vaagdevi.json" <<EOF
 {
@@ -79,9 +80,10 @@ Vaagdevi is installed.
 
   1. Quit and reopen iTerm2 so it picks up the fonts.
   2. Open a window with the "Vaagdevi" profile (Profiles menu).
-  3. For the svara toggle, add this line to ~/.zshrc or ~/.bashrc:
+  3. Add these lines to ~/.zshrc:
 
-       source "$SHARE/svara.sh"
+       source "$SHARE/svara.sh"     # 'svara on' / 'svara off': svara colours
+       source "$SHARE/skt.zsh"      # 'skt': type Sanskrit in Baraha, Ctrl-X t to stop
 
-     then run 'svara on' or 'svara off' in any tab.
+     (In bash, only the first line works: Sanskrit typing needs zsh.)
 EOF

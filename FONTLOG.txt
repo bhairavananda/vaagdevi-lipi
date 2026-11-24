@@ -58,6 +58,12 @@ Changes from the sources
 ChangeLog
 ---------
 
+2026-11-24  Version 0.3
+- Sanskrit typing in zsh: `skt` turns typed Baraha into Devanagari as you
+  type, with Vedic accents (q anudātta, # svarita, $ dīrgha svarita).
+  The installers set it up next to the svara toggle. The fonts are
+  unchanged apart from the version number.
+
 2026-11-24  Version 0.2
 - Words packed as in print, with pre-shifted akṣara copies chosen in 'calt'.
 - Vaagdevi Svara: the same font with svara colours (COLR/CPAL).
