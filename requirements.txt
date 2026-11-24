@@ -1,0 +1,4 @@
+fonttools>=4.68
+uharfbuzz>=0.57
+pyobjc-framework-CoreText>=11
+pyobjc-framework-Quartz>=11

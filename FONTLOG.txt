@@ -1,0 +1,58 @@
+FONTLOG for Vaagdevi
+====================
+
+This file gives information about the Vaagdevi font software, as the SIL Open
+Font License recommends.
+
+
+Basic font information
+----------------------
+
+Vaagdevi (वाग्देवी) is a companion font for rendering accented Vedic Sanskrit
+in the iTerm2 terminal on macOS. It is meant to be the terminal's non-ASCII
+font, next to a monospace font such as Monaco.
+
+It is built entirely by the scripts in this repository (build.py, ligate.py)
+from two fonts under the SIL Open Font License 1.1:
+
+- Noto Sans Devanagari (variable; wght and wdth axes)
+  Copyright 2022 The Noto Project Authors
+  (https://github.com/notofonts/devanagari)
+- Noto Sans Mono
+  Copyright 2022 The Noto Project Authors
+  (https://github.com/notofonts/latin-greek-cyrillic)
+
+Neither source uses a Reserved Font Name.
+
+
+Changes from the sources
+------------------------
+
+- Noto Sans Devanagari is instanced at weight 500 and width 100, and
+  subset to Devanagari, Vedic Extensions and Devanagari Extended.
+- Every Devanagari glyph is re-fitted to a 600-unit cell grid. Its
+  advance is a whole number of cells, matching how iTerm2 counts cells.
+- Reph and the below-base rakāra get one cell of headline filler through
+  a contextual GSUB rule.
+- About 4,800 composite glyphs, one per akṣara, are added from Noto's
+  natural layout. A late GSUB ligature lookup substitutes them, so iTerm2's
+  grid alignment cannot pull an akṣara apart.
+- Svara marks inside composites sit on fixed lines: anudātta hangs from
+  one low line and svarita stands on one line above the headline. The
+  svarita stroke is drawn 40% taller.
+- Letters too wide for their cells use outlines from Noto's condensed
+  width (wdth 62.5).
+- GPOS advance adjustments are zeroed, so nothing changes advances after
+  fitting.
+- The dotted circle (U+25CC) is left out, because shapers would insert it
+  for marks typed out of order and it would cost a cell.
+- Merged with Noto Sans Mono for Latin, IAST, box drawing and block
+  elements. Line metrics match Monaco.
+
+
+ChangeLog
+---------
+
+2026-11-23  Version 0.1
+- First working version for iTerm2 3.5.14, verified on the accented
+  Ṛgveda (457,200 of 457,202 word occurrences drawn correctly).
