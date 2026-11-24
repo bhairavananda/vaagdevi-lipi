@@ -133,16 +133,18 @@ def misplaced(glyphs, text):
 _C = "\u0915-\u0939\u0958-\u095F\u0978-\u097F"                 # consonants
 _V = "\u0904-\u0914\u0960\u0961\u0972-\u0977"                  # independent vowels
 _M = "\u093A\u093B\u093E-\u094C\u094E\u094F\u0955-\u0957\u0962\u0963"  # vowel signs
-_MARKS = "\u0900-\u0903\u0951-\u0954\u1CD0-\u1CFF\uA8E0-\uA8F1\u200C\u200D"
+_MARKS = "\u0900-\u0903\u0951-\u0954\u1CD0-\u1CFF\uA8E0-\uA8F1\u200D"
 AKSHARA = re.compile(
-    f"(?:(?:[{_C}]\u093C?\u094D[\u200C\u200D]?)*[{_C}]\u093C?(?:[{_M}]+|\u094D)?"
+    f"(?:(?:[{_C}]\u093C?\u094D\u200D?)*[{_C}]\u093C?(?:[{_M}]+|\u094D)?"
     f"|[{_V}]|.)[{_MARKS}]*", re.S)
 
 
 def word_aksharas(word):
     """A word's akṣaras (orthographic syllables): any number of consonant +
     virāma, a consonant, then its vowel signs or a final virāma, then marks.
-    A virāma before an independent vowel (र्ऋ) ends the syllable."""
+    A virāma before an independent vowel (र्ऋ) or before a zero-width
+    non-joiner (ञ्‌ज, an explicit virāma instead of a conjunct) ends the
+    syllable; the non-joiner stands alone."""
     return AKSHARA.findall(word)
 
 
@@ -439,7 +441,7 @@ def main():
     from fontTools.pens.boundsPen import BoundsPen
     stage1 = OUT
     shaper = Shaper(stage1)
-    corpus = syllables(corpus_words())
+    corpus = syllables(corpus_words(examples=True))
     candidates = list(corpus) + [s for s in synthetic() if s not in corpus]
 
     from build import SCALE, headline_span
@@ -489,6 +491,8 @@ def main():
 
     plans, by_text, bad_weight = {}, {}, 0
     for text in candidates:
+        if not text.strip("\u200c\u200d"):
+            continue   # CoreText draws a lone joiner with the space glyph: leave it be
         glyphs = shaper.shape(text)
         if not glyphs:
             continue
@@ -551,7 +555,7 @@ def main():
         return variants[seq, step][1]
     for seq in plans:
         variant(seq, 0)
-    for word in corpus_words():
+    for word in corpus_words(examples=True):
         step = 0
         for text in word_aksharas(word):
             seq = by_text.get(text)

@@ -58,8 +58,16 @@ Changes from the sources
 ChangeLog
 ---------
 
+2026-11-24  Version 0.2
+- Words packed as in print, with pre-shifted akṣara copies chosen in 'calt'.
+- Vaagdevi Svara: the same font with svara colours (COLR/CPAL).
+- 130% line spacing recommended, so svara marks clear neighbouring lines.
+- Packing also covers the texts in examples/ (Ṛgveda 1.1, Bhāgavatam 4.9.6).
+- A virāma before a zero-width non-joiner ends the akṣara (ञ्‌ज).
+- First release with prebuilt fonts and a one-line installer.
+- Verified on the accented Ṛgveda: 457,198 of 457,202 word occurrences
+  drawn correctly; the rest are typos in the source.
+
 2026-11-23  Version 0.1
 - First working version for iTerm2 3.5.14, verified on the accented
-  Ṛgveda (457,198 of 457,202 word occurrences drawn correctly; the rest
-  are typos in the source).
-- Words packed as in print; Vaagdevi Svara colour build.
+  Ṛgveda (457,200 of 457,202 word occurrences drawn correctly).

@@ -55,7 +55,8 @@ composite glyph:
 1. Split each word into akṣaras (orthographic syllables): any number of
    consonant + virāma, a consonant, its vowel signs or a final virāma, then
    marks. स्य॑ is one akṣara; in र्ऋ the virāma before an independent vowel
-   ends the syllable, as CoreText draws it.
+   ends the syllable, as CoreText draws it, and so does a virāma before a
+   zero-width non-joiner (ञ्‌ज).
 2. Shape the akṣara with CoreText using the cell-fitted font, to learn the
    exact glyph sequence iTerm2 will see.
 3. Lay the akṣara out with Noto Sans Devanagari's own natural shaping, so
@@ -87,7 +88,7 @@ it leaves uneven gaps inside words. Vaagdevi sets words as in print instead:
   word's spare cells collect after it.
 - A composite can't see its neighbours, so each akṣara gets **pre-shifted
   copies**, one per shift step of 50 units (`PACK_Q`) it actually takes in
-  the Ṛgveda (about 42,000 copies). Each copy also records the slack it hands
+  the Ṛgveda or in the texts in `examples/` (about 42,000 copies). Each copy also records the slack it hands
   on. A chained contextual GSUB lookup picks the copy from the previous glyph.
 - That lookup lives in **`calt`**, not with the Devanagari features. Shapers
   apply `psts`, `haln` and the rest one syllable at a time, so a rule there
