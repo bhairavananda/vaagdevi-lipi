@@ -16,12 +16,14 @@ from Foundation import NSURL
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from build import OUT  # noqa: E402
+from build import LINE_SPACING, OUT  # noqa: E402
 from ligate import iterm_x  # noqa: E402
 
 SIZE = float(os.environ.get("SIZE", 36))   # points; set SIZE=110 to inspect details
 CELL = 0.6 * SIZE
-ROW = SIZE * 1.53
+# iTerm2's row: Monaco's line (ascent 1000 + descent 250 + gap 83 per 1000)
+# times the profile's vertical spacing, extra space split above and below.
+ROW = SIZE * 1.333 * float(os.environ.get("LINE_SPACING", LINE_SPACING))
 
 
 def main():
@@ -42,7 +44,7 @@ def main():
     Q.CGContextSetRGBFillColor(ctx, 0.92, 0.86, 0.70, 1)
     scale = SIZE / 1000.0
     for r, text in enumerate(lines):
-        y = H - 20 - (r + 1) * ROW + ROW * 0.3
+        y = H - 20 - (r + 1) * ROW + (ROW - 1.333 * SIZE) / 2 + 0.29 * SIZE
         attrs = {CT.kCTFontAttributeName: font}
         line = CT.CTLineCreateWithAttributedString(CT.CFAttributedStringCreate(None, text, attrs))
         for run in CT.CTLineGetGlyphRuns(line):
