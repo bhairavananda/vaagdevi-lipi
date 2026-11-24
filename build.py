@@ -50,7 +50,7 @@ SCALE = 1.00           # Devanagari at Noto's full design size
 # marks reach above and below Monaco's line box, so rows need extra room for
 # a svarita on one line to clear the anudātta of the line above.
 LINE_SPACING = 1.3
-VERSION = "0.3"
+VERSION = "0.4"
 RAISE = 136            # lifts the headline to Monaco's cap height (758 units)
 HEADLINE = (548, 622)  # y-band of the shirorekha in Noto Devanagari (unscaled)
 

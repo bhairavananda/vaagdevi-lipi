@@ -32,8 +32,8 @@ You'll need iTerm2 3.5 on macOS. Then:
 curl -fsSL https://github.com/bhairavananda/vaagdevi-lipi/releases/latest/download/install.sh | sh
 ```
 
-That downloads the two fonts, the svara toggle and the Sanskrit typing mode,
-and adds two iTerm2 profiles, **Vaagdevi** and **Vaagdevi Svara**. Both copy your default profile and change only the
+That downloads the two fonts, the svara toggle, the Sanskrit typing mode and
+the Neovim preview, and adds two iTerm2 profiles, **Vaagdevi** and **Vaagdevi Svara**. Both copy your default profile and change only the
 Devanagari font, so your colours, keys and main font come along unchanged.
 Quit and reopen iTerm2, open a window with the Vaagdevi profile from the
 Profiles menu, and try something:
@@ -43,7 +43,11 @@ curl -fsSL https://raw.githubusercontent.com/bhairavananda/vaagdevi-lipi/main/ex
 ```
 
 If your main font isn't 12 pt, run the installer with `VAAGDEVI_SIZE=14`
-(or whatever you use) in front of `sh`. The script is short and only writes
+(or whatever you use) in front of `sh`. To have every new tab open with
+Vaagdevi, make it your default profile: Settings → Profiles, select
+Vaagdevi, then Other Actions → Set as Default. (From a checkout,
+`.venv/bin/python install.py --parent "Your Profile" --default` does the
+same, and takes effect the next time iTerm2 starts.) The script is short and only writes
 to `~/Library/Fonts`, iTerm2's profile folder and `~/.local/share/vaagdevi`,
 so feel free to read [`install.sh`](install.sh) before you run it.
 
@@ -159,6 +163,43 @@ The converter is a small Python script with no dependencies
 so typing stays quick. It round-trips 99.996% of the accented Ṛgveda through
 Baraha and back; the rest are typos in the source.
 
+## Writing in Neovim
+
+Neovim can show Devanagari, but it can't edit it well in a terminal: it
+counts ि ा ी ो as taking no space, while iTerm2 gives each a cell, so the
+cursor and anything you type on a Devanagari line land in the wrong place.
+So the comfortable way is to write in Baraha in Neovim, where everything is
+plain ASCII and every motion works, and let Vaagdevi show you the result
+next to it.
+
+Add the plugin at the end of your `~/.config/nvim/init.lua` (the installer
+prints these lines). The second line loads it straight away, which also
+works if a plugin manager like lazy.nvim handles your other plugins:
+
+```lua
+vim.opt.rtp:append(vim.fn.expand("~/.local/share/vaagdevi/nvim"))
+vim.cmd.runtime("plugin/vaagdevi.lua")
+```
+
+Then, in any buffer:
+
+| Command | Key | What it does |
+|---|---|---|
+| `:Vaagdevi` | `<leader>vv` | opens a preview pane beside Neovim, or closes it |
+| `:VaagdeviSvara` | `<leader>vs` | svara colours on or off in the preview |
+| `:VaagdeviConvert` | | turns the buffer, or the selected lines, into Devanagari |
+
+The preview is a real iTerm2 pane drawn with Vaagdevi. It updates as you
+type, follows your cursor (marked with ▸) and closes when you quit Neovim.
+If the buffer already holds Devanagari, the preview shows it as it is;
+otherwise it reads the buffer as Baraha. When you're done,
+`:VaagdeviConvert` turns the buffer (or the lines you've selected) into
+Devanagari, or `skt < sukta.brh > sukta.txt` does the same from the shell.
+
+The keys are only set if you haven't mapped them already. Set
+`vim.g.vaagdevi_no_mappings = true` to skip them, or `vim.g.vaagdevi_profile`
+to use a different iTerm2 profile for the pane.
+
 ## How it works
 
 Terminals think in cells. iTerm2 gives each letter and each spacing vowel
@@ -264,6 +305,7 @@ verify.py  verify_iterm.py            the checks
 install.py  install.sh                installing from a checkout / from a release
 shell/svara.sh                        the svara toggle
 shell/skt.zsh  shell/skt.py           typing Sanskrit in Baraha
+nvim/plugin/vaagdevi.lua              the Neovim live preview
 preview.py  diagrams.py  install_dev.py  screenshots.py  probe.py
 data/                                 the Ṛgveda word list and iTerm2 measurements
 examples/                             texts to try, also packed by the build

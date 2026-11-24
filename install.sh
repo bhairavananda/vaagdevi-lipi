@@ -5,9 +5,9 @@
 #
 # It downloads Vaagdevi and Vaagdevi Svara into ~/Library/Fonts, adds the
 # "Vaagdevi" and "Vaagdevi Svara" iTerm2 profiles (they inherit everything
-# else from your default profile), and puts the svara toggle and the
-# Sanskrit typing mode in ~/.local/share/vaagdevi. It doesn't edit your
-# shell config.
+# else from your default profile), and puts the svara toggle, the Sanskrit
+# typing mode and the Neovim preview plugin in ~/.local/share/vaagdevi. It
+# doesn't edit your shell or editor config.
 #
 # Set VAAGDEVI_SIZE to match your main font size (default 12), or
 # VAAGDEVI_VERSION to install a specific release tag instead of the latest.
@@ -42,14 +42,15 @@ fi
 # Download everything first, so a failed download leaves nothing half-written.
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf svara.sh skt.zsh skt.py; do
+for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf svara.sh skt.zsh skt.py vaagdevi.lua; do
     echo "downloading $f"
     curl -fsSL -o "$TMP/$f" "$BASE/$f"
 done
 
-mkdir -p "$FONTS" "$PROFILES" "$SHARE"
+mkdir -p "$FONTS" "$PROFILES" "$SHARE/nvim/plugin"
 mv "$TMP/Vaagdevi-Regular.ttf" "$TMP/VaagdeviSvara-Regular.ttf" "$FONTS/"
 mv "$TMP/svara.sh" "$TMP/skt.zsh" "$TMP/skt.py" "$SHARE/"
+mv "$TMP/vaagdevi.lua" "$SHARE/nvim/plugin/vaagdevi.lua"
 
 cat > "$PROFILES/vaagdevi.json" <<EOF
 {
@@ -86,4 +87,11 @@ Vaagdevi is installed.
        source "$SHARE/skt.zsh"      # 'skt': type Sanskrit in Baraha, Ctrl-X t to stop
 
      (In bash, only the first line works: Sanskrit typing needs zsh.)
+
+  4. For the Neovim preview, add these to the end of ~/.config/nvim/init.lua:
+
+       vim.opt.rtp:append("$SHARE/nvim")
+       vim.cmd.runtime("plugin/vaagdevi.lua")
+
+     then :Vaagdevi (or <leader>vv) opens a live preview beside you.
 EOF
