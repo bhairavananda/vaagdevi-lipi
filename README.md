@@ -32,8 +32,8 @@ You'll need iTerm2 3.5 on macOS. Then:
 curl -fsSL https://github.com/bhairavananda/vaagdevi-lipi/releases/latest/download/install.sh | sh
 ```
 
-That downloads the two fonts and adds two iTerm2 profiles, **Vaagdevi** and
-**Vaagdevi Svara**. Both copy your default profile and change only the
+That downloads the two fonts, the svara toggle and the Sanskrit typing mode,
+and adds two iTerm2 profiles, **Vaagdevi** and **Vaagdevi Svara**. Both copy your default profile and change only the
 Devanagari font, so your colours, keys and main font come along unchanged.
 Quit and reopen iTerm2, open a window with the Vaagdevi profile from the
 Profiles menu, and try something:
@@ -107,6 +107,57 @@ iTerm2 starts a new run of text whenever the colour changes, and Devanagari
 shaping can't see across those runs, so colouring each akṣara with escape
 codes would pull the words apart again. Putting the colour inside the font
 keeps every word in one run.
+
+## Typing Sanskrit
+
+Vaagdevi draws Devanagari, but your keyboard types Latin. The `skt` mode
+bridges that in zsh: you type Baraha transliteration and the command line
+fills with real Devanagari as you go, which Vaagdevi then renders. Add it to
+your `~/.zshrc` (the installer prints the exact line):
+
+```sh
+source ~/.local/share/vaagdevi/skt.zsh
+```
+
+Then type `skt` and press Enter. A small **संस्कृत** appears on the right of
+your prompt, and from there each word turns into Devanagari while you type
+it. Backspace takes back the last letter you typed. Press **Ctrl-X** and
+then **s** to switch back to plain typing; you can also use it to switch on
+in the middle of a line. (Typing `skt` again wouldn't work, since in Sanskrit
+mode it becomes स्क्त्.)
+
+```
+aqgnimI#LE puqrOhi#taM yaqj~jasya# dEqvamRuqtvija#m |
+अ॒ग्निमी॑ळे पु॒रोहि॑तं य॒ज्ञस्य॑ दे॒वमृ॒त्विज॑म् ।
+```
+
+`skt` also works outside the mode, for a quick line or a whole file:
+
+```sh
+skt 'aqgnimI#LE'           # अ॒ग्निमी॑ळे
+skt < sukta.brh > sukta.txt
+```
+
+The scheme is standard Baraha, with one change for Sanskrit: since there's
+no short e or o, plain `e` and `o` give ए and ओ (Baraha's `E` and `O` work
+too). The essentials:
+
+| Type | Get | | Type | Get |
+|---|---|---|---|---|
+| `a A i I u U` | अ आ इ ई उ ऊ | | `Ru RU` | ऋ ॠ |
+| `e ai o au` | ए ऐ ओ औ | | `M H ~M` | ं ः ँ |
+| `k kh g gh ~g` | क ख ग घ ङ | | `ch Ch j jh ~j` | च छ ज झ ञ |
+| `T Th D Dh N` | ट ठ ड ढ ण | | `t th d dh n` | त थ द ध न |
+| `p ph b bh m` | प फ ब भ म | | `y r l v` | य र ल व |
+| `sh Sh s h L` | श ष स ह ळ | | `kSh j~j` | क्ष ज्ञ |
+| `q` after a vowel | anudātta ॒ | | `#` after a vowel | svarita ॑ |
+| `$` after a vowel | dīrgha svarita ᳚ | | `\| \|\|` | । ॥ |
+| `&` | ऽ | | `_` | keeps letters apart: `ka_i` कइ |
+
+The converter is a small Python script with no dependencies
+([`shell/skt.py`](shell/skt.py)), started once per shell and kept running,
+so typing stays quick. It round-trips 99.996% of the accented Ṛgveda through
+Baraha and back; the rest are typos in the source.
 
 ## How it works
 
@@ -212,6 +263,7 @@ build.py  ligate.py  svara_color.py   the build
 verify.py  verify_iterm.py            the checks
 install.py  install.sh                installing from a checkout / from a release
 shell/svara.sh                        the svara toggle
+shell/skt.zsh  shell/skt.py           typing Sanskrit in Baraha
 preview.py  diagrams.py  install_dev.py  screenshots.py  probe.py
 data/                                 the Ṛgveda word list and iTerm2 measurements
 examples/                             texts to try, also packed by the build
