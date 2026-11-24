@@ -30,17 +30,25 @@ SHARE="$HOME/.local/share/vaagdevi"
 case "$SIZE" in
     ''|*[!0-9]*) echo "VAAGDEVI_SIZE must be a whole number, got '$SIZE'" >&2; exit 1 ;;
 esac
+case "${VAAGDEVI_VERSION:-}" in
+    *[!A-Za-z0-9._-]*) echo "VAAGDEVI_VERSION should be a release tag like v0.2" >&2; exit 1 ;;
+esac
 if [ "$(uname -s)" != Darwin ]; then
     echo "Vaagdevi is built for iTerm2 on macOS." >&2
     exit 1
 fi
 
-mkdir -p "$FONTS" "$PROFILES" "$SHARE"
-for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf; do
+# Download everything first, so a failed download leaves nothing half-written.
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+for f in Vaagdevi-Regular.ttf VaagdeviSvara-Regular.ttf svara.sh; do
     echo "downloading $f"
-    curl -fsSL -o "$FONTS/$f" "$BASE/$f"
+    curl -fsSL -o "$TMP/$f" "$BASE/$f"
 done
-curl -fsSL -o "$SHARE/svara.sh" "$BASE/svara.sh"
+
+mkdir -p "$FONTS" "$PROFILES" "$SHARE"
+mv "$TMP/Vaagdevi-Regular.ttf" "$TMP/VaagdeviSvara-Regular.ttf" "$FONTS/"
+mv "$TMP/svara.sh" "$SHARE/svara.sh"
 
 cat > "$PROFILES/vaagdevi.json" <<EOF
 {
